@@ -1,0 +1,47 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            native: linuxX64
+          - os: macos-latest
+            native: macosArm64
+          - os: windows-latest
+            native: mingwX64
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: Heapy/setup-main-kts@b0858237748f325b825e752bbac2ec2eb1fb9419 # v1.0.1
+        with:
+          kotlin-version: '2.4.21'
+          kotlin-sha256: '7cc140e76daf416a0424a5557f99afd7ca89ebd463ea1101261e3e01c33e75cd'
+          java-version: '25'
+      - uses: Heapy/setup-ktc@e0a603c477110083db0b44f302deb188d4991ea0 # v1.1.0
+        with:
+          version: auto
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '24'
+      - run: npx --yes playwright@1.61.0 install --with-deps chromium
+      - run: ./kotlin test --platform jvm --platform ${{ matrix.native }}
+      - run: kotlinr scripts/integration.main.kts
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: reports-${{ matrix.os }}
+          path: |
+            build/**/TEST-*.xml
+            build/**/*.log
+          if-no-files-found: ignore

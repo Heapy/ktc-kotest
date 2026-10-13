@@ -1,0 +1,5 @@
+product:
+  type: kmp/lib
+  platforms: [jvm, js, wasmJs, linuxX64, macosArm64, mingwX64]
+apply:
+  - //plugins/kotest/kotest.module-template.yaml

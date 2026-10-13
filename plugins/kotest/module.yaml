@@ -1,0 +1,8 @@
+product: jvm/amper-plugin
+
+description: Kotest integration for JVM, Native, JS and Wasm-JS with Node and Chromium runners.
+pluginInfo:
+  id: kotest
+  settingsClass: io.heapy.ktc.plugins.kotest.KotestSettings
+dependencies:
+  - com.microsoft.playwright:playwright:1.61.0

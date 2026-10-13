@@ -1,0 +1,5 @@
+modules:
+  - example
+  - plugins/kotest
+plugins:
+  - //plugins/kotest

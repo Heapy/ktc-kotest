@@ -1,0 +1,20 @@
+# Test-only Kotest discovery. Keep the engine, assertions, runner and processor aligned.
+test-dependencies:
+  - io.kotest:kotest-framework-engine:6.2.5
+  - io.kotest:kotest-assertions-core:6.2.5
+  # Runtime overrides verified with Kotlin 2.4.20 Native/Wasm.
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0: runtime-only
+  - org.jetbrains.kotlinx:kotlinx-io-core:0.9.1: runtime-only
+
+test-dependencies@jvm:
+  - io.kotest:kotest-runner-junit5:6.2.5
+
+test-settings:
+  kotlin:
+    ksp:
+      version: 2.3.12
+      processors:
+        - io.kotest:kotest-framework-symbol-processor:6.2.5
+
+plugins:
+  kotest: enabled

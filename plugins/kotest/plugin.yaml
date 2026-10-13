@@ -1,0 +1,18 @@
+tasks:
+  kotestJs:
+    action: !io.heapy.ktc.plugins.kotest.runWebTests
+      projectDir: ${project.rootDir}
+      moduleName: ${module.name}
+      settings: ${pluginSettings}
+      platform: js
+      outputDir: ${taskOutputDir}
+  kotestWasm:
+    action: !io.heapy.ktc.plugins.kotest.runWebTests
+      projectDir: ${project.rootDir}
+      moduleName: ${module.name}
+      settings: ${pluginSettings}
+      platform: wasmJs
+      outputDir: ${taskOutputDir}
+checks:
+  - kotestJs
+  - kotestWasm
